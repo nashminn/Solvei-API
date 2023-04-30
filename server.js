@@ -31,22 +31,10 @@ const startServer = async() => {
         // connect to db
         connectDB(process.env.MONGODB_URL);
 
-        // console.log(process.env.MONGODB_URL);
-        // const fileName = 'abcd.pdf'; // Replace with your file name
-        // const mimeType = 'application/pdf'; // Replace with your file MIME type
-        // const fileBody = 'Hello World'; // Replace with your file content
-
-        // try {
-        //     // await createFile(fileName, mimeType, fileBody);
-        //     await getFile("1WdXAxDBWI2PqzoQT7mWmTf0kBKtPYVLs");
-
-        // } catch(error) {
-        //     console.log("error message from server.js: ", error.message, error)
-        // }
-        // listAllFiles()
+        listAllFiles()
         // await getFile("1k0gKQqT-nOEuw7vCUMtPL8V6rmdiqnav")
-        // deleteFileById("14LeB25Pu_9iSN_9dwlORhttt8fH2crrJ")
-        
+        // deleteFileById("1pql0FYhmsk4c3der4zMBihdUsOhr9rm6")
+
 
         app.listen(process.env.PORT, () => {
             console.log("Server has started on port http://localhost:8080");
