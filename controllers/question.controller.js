@@ -15,13 +15,15 @@ const addQuestion = async (req, res)  => {
             return res.status(400).json({ message: 'Error in parsing form data' });
         }
 
-        const { postedBy, courseCode, courseName, batch, examType, teacher, numOfQuestions, topics } = req.body;
-        
-        console.log(req.body)
+        const { postedBy, courseCode, courseName, batch, examType, teacher, numOfQuestions } = req.body;
+        var {topics} = req.body
+        topics = topics.split(',')
+
         // rest of the code
         // console.log(req.file)
         let pdfFile 
         let fileId
+
         try {
 
             const bufferStream = new Readable();
