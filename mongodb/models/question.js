@@ -6,6 +6,14 @@ const QuestionSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    created_at: {
+        type: Date,
+        default: Date.now
+    },
+    updated_at: {
+        type: Date,
+        default: Date.now
+    },
     examType: {
         type: String,
         required: true
@@ -32,8 +40,6 @@ const QuestionSchema = new mongoose.Schema({
         required: true
     },
     pdfFile: {
-        // data: Buffer,
-        // contentType: String
         type: String,
         required: true
     },
@@ -49,6 +55,42 @@ QuestionSchema.statics.addQuestion = async function(body) {
 
     return question;
 }
+
+QuestionSchema.statics.searchQuestion = async function(courseCode, courseName, batch, examType, yearSemester, teacher) {
+    var query = {};
+    console.log("in question.js: ", courseCode, courseName, batch, examType, yearSemester, teacher)
+    if(batch) {
+        query.batch = batch;
+    }
+    
+    if(examType) {
+        query.examType = examType
+    }
+
+    if(courseCode) {
+        query.courseCode = courseCode
+    } else if(yearSemester) {
+        query.courseCode = {$regex: ".*" + yearSemester + ".*"}
+    }
+
+    if(courseName) {
+        query.courseName =  {$regex : ".*" + courseName + ".*"}
+    }
+
+    if(teacher) {
+        query.teacher = {$regex: ".*" + teacher + ".*"}
+    }
+
+    console.log("query for find operation", query)
+    const qList = await this.find(query)
+    console.log("questions list length", qList.length)
+    return qList
+    
+}
+
+// QuestionSchema.statics.searchQuestions = async function() {
+//     const questions = await this.
+// }
 
 QuestionSchema.statics.getQuestionByID = async function(_id) {
     console.log("in question.js _id: ", _id)

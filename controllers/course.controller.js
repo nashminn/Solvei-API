@@ -17,7 +17,7 @@ const createCourse = async (req, res) => {
 
 const getActiveCourses = async(req, res) => {
     try {
-        const courses = await Course.getActiveCourses();
+        const courses = await Course.getCourses(true);
 
         res.status(200).json({courses});
     } catch(error) {
@@ -25,9 +25,20 @@ const getActiveCourses = async(req, res) => {
     }
 }
 
+const getAllCourses = async(req, res) => {
+    try {
+        const courses = await Course.getCourses(false);
+
+        res.status(200).json({courses})
+    } catch(error) {
+        res.status(400).json({error: error.message})
+    }
+}
+
 export {
     createCourse,
-    getActiveCourses
+    getActiveCourses, 
+    getAllCourses
 }
 
 

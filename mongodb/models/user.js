@@ -6,7 +6,7 @@ import validator from "email-validator";
 const UserSchema = new mongoose.Schema({
     name: {
         type: String,
-        // required: true
+        required: true
     },
     email: {
         type: String,
@@ -22,6 +22,18 @@ const UserSchema = new mongoose.Schema({
     },
     role: {
         type: String
+    },
+    recentActivity: {
+        type: [
+            {
+                description: {
+                    type: String,
+                },
+                questionId: {
+                    type: String
+                }
+            }
+        ]
     }
 });
 

@@ -57,8 +57,8 @@ CourseSchema.statics.addCourse = async function(email, password, _course) {
 
 }
 
-CourseSchema.statics.getActiveCourses = async function() {
-    const courses = await this.find({'active': true})
+CourseSchema.statics.getCourses = async function(active) {
+    const courses = await this.find(active?{'active': true}:{})
 
     return courses;
 

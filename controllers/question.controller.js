@@ -88,7 +88,69 @@ const getQuestion = async(req, res) => {
     }
 }
 
+const searchQuestion = async(req, res) => {
+    const batch = req.query.batch? Number(req.query.batch) : req.query.batch;
+    const examType = req.query.examType;
+    const course = (req.query.course===undefined)?req.query.course:decodeURIComponent(req.query.course);
+    const yearSemester = req.query.yearSemester;
+    const teacher = (!(req.query.teacher===undefined))?decodeURIComponent(req.query.teacher):req.query.teacher;
+    
+    let courseCode, courseName
+    if(course && String(course).includes(':')) {
+        courseCode = decodeURIComponent(course).split(':')[0]
+        courseName = decodeURIComponent(course).split(':')[1].slice(1)
+        if(courseName.length === 0) {
+            courseName = undefined
+        }
+    } else {
+        courseName = course?decodeURIComponent(course):undefined
+    }
+
+    console.log(courseCode, courseName, batch, examType, yearSemester, teacher)
+    
+
+    try {
+        const qs = await Question.searchQuestion(courseCode, courseName, batch, examType, yearSemester, teacher)
+        console.log(qs.length)
+        res.status(200).json(qs)
+    } catch(error) {
+        res.status(400).json(error);
+    }
+}
+
+
+const searchCourse = async(req, res) => {
+    const batch = req.query.batch? Number(req.query.batch) : req.query.batch;
+    const examType = req.query.examType;
+    const yearSemester = req.query.yearSemester;
+    const teacher = (!(req.query.teacher===undefined))?decodeURIComponent(req.query.teacher):req.query.teacher;
+    
+    let code, name
+    
+
+    console.log(code, name, batch, examType, yearSemester, teacher)
+    
+
+    try {
+        const qs = await Question.searchQuestion(code, name, batch, examType, yearSemester, teacher)
+
+        var forReturn = qs.map((q, index) => (
+            {
+                courseCode: q.courseCode,
+                courseName: q.courseName
+            }
+        ));
+        console.log(forReturn)
+        res.status(200).json(forReturn)
+    } catch(error) {
+        res.status(400).json(error);
+    }
+}
+
+
 export {
     addQuestion,
-    getQuestion
+    getQuestion,
+    searchQuestion,
+    searchCourse
 }

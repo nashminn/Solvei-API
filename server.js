@@ -8,6 +8,7 @@ import {createFile, getFile, listAllFiles, deleteFileById} from './google_drive/
 import userRouter from './routes/users.routes.js';
 import questionRouter from './routes/question.routes.js';
 import courseRouter from './routes/course.routes.js';
+import searchRouter from './routes/search.routes.js';
 
 dotenv.config();
 
@@ -18,8 +19,9 @@ app.use(cors());
 app.use(express.json({limit: '20mb'}));
 
 app.use('/api/auth', userRouter);
-app.use('/api/question', questionRouter);
 app.use('/api/course', courseRouter);
+app.use('/api/question', questionRouter);
+app.use('/api/search', searchRouter);
 
 
 app.get('/', (req, res) => {
@@ -33,7 +35,7 @@ const startServer = async() => {
 
         listAllFiles()
         // await getFile("1k0gKQqT-nOEuw7vCUMtPL8V6rmdiqnav")
-        // deleteFileById("1pql0FYhmsk4c3der4zMBihdUsOhr9rm6")
+        // deleteFileById("198iq9-7yf5c5KqFQdgFk9agxjcwgg7R0")
 
 
         app.listen(process.env.PORT, () => {
