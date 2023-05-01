@@ -15,20 +15,14 @@ const addQuestion = async (req, res)  => {
             return res.status(400).json({ message: 'Error in parsing form data' });
         }
 
-        const { postedBy, courseCode, batch, examType, teacher, numOfQuestions } = req.body;
-        var {topics} = req.body
-        topics = topics.split(',')
-        console.log(numOfQuestions)
-        console.log(topics)
+        const { postedBy, courseCode, courseName, batch, examType, teacher, numOfQuestions, topics } = req.body;
         
+        console.log(req.body)
         // rest of the code
         // console.log(req.file)
         let pdfFile 
         let fileId
         try {
-            // console.log(req.file.originalname)
-            // console.log(req.file.mimetype)
-            // console.log(req.file.buffer)
 
             const bufferStream = new Readable();
             bufferStream.push(req.file.buffer);
@@ -47,6 +41,7 @@ const addQuestion = async (req, res)  => {
                 examType,
                 batch, 
                 courseCode,
+                courseName,
                 topics, 
                 teacher,
                 numOfQuestions,
@@ -56,11 +51,18 @@ const addQuestion = async (req, res)  => {
             console.log("postedBy: ", postedBy)
             console.log("webviewlink : ", pdfFile);
             try {
-                const question = await (Question.addQuestion(body));
-                res.status(200).json(question);
+                const exists = await (Question.searchQuestion(courseCode, courseName, batch, examType, undefined, undefined) )
+                
+                console.log("exists: ", exists)
+                if(exists.length > 0) {
+                    res.status(406).json({Error: "Question already exists"})
+                } else {
+                    const question = await (Question.addQuestion(body));
+                    res.status(200).json(question);
+                }
             } catch(error) {
                 console.log("from inside add question")
-                console.log(error, error.message)
+                console.log(error)
                 res.status(400).json({error: error.message});
             }
 

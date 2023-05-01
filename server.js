@@ -25,7 +25,28 @@ app.use('/api/search', searchRouter);
 
 
 app.get('/', (req, res) => {
-    res.json({message: "hello world!"});
+    res.json({
+        api: {
+            auth: {
+                register: "register new user",
+                login: "user login",
+                user: "get user info"
+            },
+            course: {
+                "/": "home page courses",
+                all: "all courses",
+                add: "add a new course"
+            },
+            question: {
+                post: "post a new question",
+                view: "view a question and its solutions"
+            },
+            search: {
+                question: "takes params for diplaying questions",
+                course: "takes params for displaying courses"  
+            }
+        }
+    }) 
 });
 
 const startServer = async() => {
@@ -33,9 +54,9 @@ const startServer = async() => {
         // connect to db
         connectDB(process.env.MONGODB_URL);
 
-        listAllFiles()
+        // listAllFiles()
         // await getFile("1k0gKQqT-nOEuw7vCUMtPL8V6rmdiqnav")
-        // deleteFileById("198iq9-7yf5c5KqFQdgFk9agxjcwgg7R0")
+        // deleteFileById("1uhCRHxDZlxk3qDelaEBg1lcFqu_tzJ7y")
 
 
         app.listen(process.env.PORT, () => {
