@@ -70,15 +70,15 @@ QuestionSchema.statics.searchQuestion = async function(courseCode, courseName, b
     if(courseCode) {
         query.courseCode = courseCode
     } else if(yearSemester) {
-        query.courseCode = {$regex: ".*" + yearSemester + ".*"}
+        query.courseCode = {$regex: ".*" + yearSemester + ".*" , $options : "i"}
     }
 
     if(courseName) {
-        query.courseName =  {$regex : ".*" + courseName + ".*"}
+        query.courseName =  {$regex : ".*" + courseName + ".*" , $options : "i"}
     }
 
     if(teacher) {
-        query.teacher = {$regex: ".*" + teacher + ".*"}
+        query.teacher = {$regex: ".*" + teacher + ".*" , $options : "i"}
     }
 
     console.log("query for find operation", query)
