@@ -29,7 +29,8 @@ const UserSchema = new mongoose.Schema({
         type: String
     },
     contributions: {
-        type: Number
+        type: Number,
+        default: 0
     },
     recentActivity: {
         type: [

@@ -22,21 +22,21 @@ const addSolution = async (req, res) => {
         }
 
         const {postedBy, questionID, isPDF, hasImage} = req.body
-        console.log(isPDF)
-        if(isPDF === true) {
-            
+        console.log("isPDF: ",isPDF)
+        if(isPDF === 'true') {
+            console.log("isPDF true")
             var {pdfFile} = req.files
             pdfFile = pdfFile[0]
-            
+
             let pdfID 
             try {
                 const bufferStream = new Readable()
                 bufferStream.push(pdfFile.buffer)
                 bufferStream.push(null)
 
-                const fileName = questionID + "_" + postedBy
-                
-                const result = await createFile(fileName)
+                const fileName = questionID  + '_' + postedBy +".pdf"
+                console.log(pdfFile)
+                const result = await createFile(fileName, pdfFile.mimetype, bufferStream)
                 pdfID = result[0]
                 pdfFile = result[1]
                 
