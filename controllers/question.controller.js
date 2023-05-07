@@ -1,9 +1,7 @@
 import Question from '../mongodb/models/question.js';
 import multer from 'multer';
-import express from 'express';
 import { createFile, getFile } from '../google_drive/drive.js';
 import { Readable } from 'stream';
-import { type } from 'os';
 
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
@@ -84,8 +82,8 @@ const getQuestion = async(req, res) => {
     
     try {
         const q = await Question.getQuestionByID(question)
-        console.log("actual question: ", q)
-        res.status(200).json(q)
+        console.log("actual question: ", q[0])
+        res.status(200).json(q[0])
     } 
     catch(error) {
         res.status(400).json(error);

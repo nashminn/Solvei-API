@@ -46,6 +46,20 @@ const QuestionSchema = new mongoose.Schema({
     fileId: {
         type: String,
         required: true
+    },
+    flagBlurry: {
+        type: [
+            {
+                email: {type: String}
+            }
+        ]
+    },
+    flagIncorrect: {
+        type: [
+            {
+                email: {type: String}
+            }
+        ]
     }
 });
 
@@ -88,9 +102,6 @@ QuestionSchema.statics.searchQuestion = async function(courseCode, courseName, b
     
 }
 
-// QuestionSchema.statics.searchQuestions = async function() {
-//     const questions = await this.
-// }
 
 QuestionSchema.statics.getQuestionByID = async function(_id) {
     console.log("in question.js _id: ", _id)

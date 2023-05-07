@@ -17,8 +17,13 @@ const UserSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    registrationNumber: {
+        type: String,
+        required: true
+    },
     batch: {
-        type: Number
+        type: Number,
+        required: true
     },
     role: {
         type: String
@@ -26,12 +31,28 @@ const UserSchema = new mongoose.Schema({
     recentActivity: {
         type: [
             {
-                description: {
-                    type: String,
-                },
-                questionId: {
-                    type: String
+                description: {type: String},
+                answered: {type: Boolean},
+                questionId: {type: String},
+                courseCode: {type: String},
+                courseName: {type: String},
+                batch: {type: Number},
+                examType: {type: String},
+                timestamp: {
+                    type: Date,
+                    default: Date.now
                 }
+            }
+        ]
+    },
+    starred: {
+        type: [
+            {
+                courseCode: {type: String},
+                courseName: {type: String},
+                batch: {type: Number},
+                examType: {type: String},
+                questionId: {type: String}
             }
         ]
     }
@@ -100,10 +121,36 @@ UserSchema.statics.getUserInfo = async function(email) {
     if(!user) {
         throw Error("user not found");
     }
-
+    console.log(user)
     return user;
 }
   
+UserSchema.statics.addToStarred = async function(email, body) {
+    const user = await this.findOne({email})
+    console.log(user._id)
+    await this.updateOne(
+        {_id: user._id},
+        {$push: {starred: body}},
+        {new: true}
+    )
+}
+
+UserSchema.statics.removeFromStarred = async function (email, questionToRemove) {
+    const user = await this.findOne({email})
+    await this.updateOne(
+        { _id: user._id },
+        { $pull: { starred: { questionId: questionToRemove } } },
+        { new: true }
+    )
+}
+
+UserSchema.statics.addRecentActivity = async function(email, body) {
+    const user = this.findOne({email})
+    this.updateOne(
+        {_id: user._id},
+        {$push: body}
+    )
+}
 
 const userModel = mongoose.model('User', UserSchema);
 

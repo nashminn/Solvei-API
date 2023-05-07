@@ -7,11 +7,12 @@ const createToken = (_id) => {
 
 
 const createUser = async (req, res) => {
-    const {email, name, batch, password} = req.body;
+    const {email, name, batch, password, registrationNumber} = req.body;
     const body = {
         "email": email,
         "name": name,
-        "batch": batch
+        "batch": batch,
+        "registrationNumber": registrationNumber
     }
 
     try {
@@ -57,9 +58,39 @@ const getUserInfo = async (req, res) => {
     }
 };
 
+const addToStarred = async(req, res) => {
+    try {
+        const {email, courseCode, courseName, batch, examType, questionId} = req.body
+        const body = {
+            courseCode: courseCode,
+            courseName: courseName,
+            batch: batch,
+            examType: examType,
+            questionId: questionId
+        }
+        await User.addToStarred(email, body)
+        res.status(200).json({message: "Added to starred"})
+    } catch(error) {
+        res.status(400).json({error: error.message})
+    }
+}
+
+const removeFromStarred = async (req, res) => {
+    try {
+        const {email, questionId} = req.body
+        await User.removeFromStarred(email, questionId)
+        res.status(200).json({message: "Removed from starred"})
+    } catch(error) {
+        res.status(400).json({error: error.message})
+    }
+}
+
+
 
 export {
     createUser,
     loginUser,
-    getUserInfo
+    getUserInfo,
+    addToStarred,
+    removeFromStarred
 }
