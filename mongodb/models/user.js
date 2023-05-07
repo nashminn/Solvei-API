@@ -28,6 +28,9 @@ const UserSchema = new mongoose.Schema({
     role: {
         type: String
     },
+    contributions: {
+        type: Number
+    },
     recentActivity: {
         type: [
             {
@@ -145,10 +148,13 @@ UserSchema.statics.removeFromStarred = async function (email, questionToRemove) 
 }
 
 UserSchema.statics.addRecentActivity = async function(email, body) {
-    const user = this.findOne({email})
-    this.updateOne(
+    console.log("add recent activity: email: ",email);
+    const user = await this.findOne({email})
+    console.log("add recent activity to user: ", user)
+    await this.updateOne(
         {_id: user._id},
-        {$push: body}
+        { $push: {recentActivity: body}},
+        { new: true}
     )
 }
 

@@ -59,12 +59,16 @@ const addQuestion = async (req, res)  => {
                 } else {
                     const question = await (Question.addQuestion(body));
                     res.status(200).json(question);
+
+                    // updating recent activity of user
+                    
                 }
             } catch(error) {
                 console.log("from inside add question")
                 console.log(error)
                 res.status(400).json({error: error.message});
             }
+
 
             
         } catch(error) {
@@ -82,8 +86,8 @@ const getQuestion = async(req, res) => {
     
     try {
         const q = await Question.getQuestionByID(question)
-        console.log("actual question: ", q[0])
-        res.status(200).json(q[0])
+        console.log("actual question: ", q)
+        res.status(200).json(q)
     } 
     catch(error) {
         res.status(400).json(error);

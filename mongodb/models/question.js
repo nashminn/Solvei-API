@@ -107,7 +107,7 @@ QuestionSchema.statics.getQuestionByID = async function(_id) {
     console.log("in question.js _id: ", _id)
     let question;
     try {
-        question = await this.find({_id: new mongoose.Types.ObjectId(_id)})
+        question = await this.findOne({_id: new mongoose.Types.ObjectId(_id)})
     } catch(error) {
         console.log(error)
     }
