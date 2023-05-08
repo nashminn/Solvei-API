@@ -32,7 +32,7 @@ const addQuestion = async (req, res)  => {
             const result = await createFile(fileName, req.file.mimetype, bufferStream);
             fileId = result[0]
             pdfFile = result[1]
-            console.log("fileId: ", fileId)
+            // console.log("fileId: ", fileId)
                        
             console.log("webViewLink from question controller: ", pdfFile);
 
@@ -48,12 +48,12 @@ const addQuestion = async (req, res)  => {
                 pdfFile,
                 fileId
             }
-            console.log("postedBy: ", postedBy)
-            console.log("webviewlink : ", pdfFile);
+            // console.log("postedBy: ", postedBy)
+            // console.log("webviewlink : ", pdfFile);
             try {
                 const exists = await (Question.searchQuestion(courseCode, courseName, batch, examType, undefined, undefined) )
                 
-                console.log("exists: ", exists)
+                // console.log("exists: ", exists)
                 if(exists.length > 0) {
                     res.status(406).json({Error: "Question already exists"})
                 } else {
@@ -64,7 +64,7 @@ const addQuestion = async (req, res)  => {
                     
                 }
             } catch(error) {
-                console.log("from inside add question")
+                // console.log("from inside add question")
                 console.log(error)
                 res.status(400).json({error: error.message});
             }
@@ -76,7 +76,7 @@ const addQuestion = async (req, res)  => {
             console.log(error, error.message)
             res.status(400).json({error: error.message});
         }
-        console.log("pdfFile inside callback function: ", pdfFile);
+        // console.log("pdfFile inside callback function: ", pdfFile);
     });
 };
 
@@ -86,7 +86,7 @@ const getQuestion = async(req, res) => {
     
     try {
         const q = await Question.getQuestionByID(question)
-        console.log("actual question: ", q)
+        // console.log("actual question: ", q)
         res.status(200).json(q)
     } 
     catch(error) {
@@ -112,7 +112,7 @@ const searchQuestion = async(req, res) => {
         courseName = course?decodeURIComponent(course):undefined
     }
 
-    console.log(courseCode, courseName, batch, examType, yearSemester, teacher)
+    // console.log(courseCode, courseName, batch, examType, yearSemester, teacher)
     
 
     try {
@@ -134,7 +134,7 @@ const searchCourse = async(req, res) => {
     let code, name
     
 
-    console.log(code, name, batch, examType, yearSemester, teacher)
+    // console.log(code, name, batch, examType, yearSemester, teacher)
     
 
     try {
@@ -153,10 +153,54 @@ const searchCourse = async(req, res) => {
     }
 }
 
+const flagAsBlurry = async (req, res) => {
+    try {
+        const {questionId, email} = req.body
+        await Question.flagAsBlurry(questionId, email)
+        res.status(200).json({message: "Flagged as blurry"})
+    } catch(error) {
+        res.status(400).json({error: error.message})
+    }
+}
+
+const flagAsIncorrect= async (req, res) => {
+    try {
+        const {questionId, email} = req.body
+        await Question.flagAsIncorrect(questionId, email)
+        res.status(200).json({message: "Flagged as incorrect"})
+    } catch(error) {
+        res.status(400).json({error: error.message})
+    }
+}
+
+const removeBlurryFlag = async (req, res) => {
+    try {
+        const {questionId, email} = req.body
+        await Question.removeBlurryFlag(questionId, email)
+        res.status(200).json({message: "Removed 'blurry' flag"})
+    } catch(error) {
+        res.status(400).json({error: error.message})
+    }
+}
+
+const removeIncorrectFlag = async (req, res) => {
+    try {
+        const {questionId, email} = req.body
+        await Question.removeIncorrectFlag(questionId, email)
+        res.status(200).json({message: "Removed 'incorrect' flag"})
+    } catch(error) {
+        res.status(400).json({error: error.message})
+    }
+}
+
 
 export {
     addQuestion,
     getQuestion,
     searchQuestion,
-    searchCourse
+    searchCourse,
+    flagAsBlurry,
+    flagAsIncorrect,
+    removeBlurryFlag,
+    removeIncorrectFlag
 }

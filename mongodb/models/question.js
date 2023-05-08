@@ -48,18 +48,10 @@ const QuestionSchema = new mongoose.Schema({
         required: true
     },
     flagBlurry: {
-        type: [
-            {
-                email: {type: String}
-            }
-        ]
+        type: [String] // list of emails
     },
     flagIncorrect: {
-        type: [
-            {
-                email: {type: String}
-            }
-        ]
+        type: [String] // list of emails
     }
 });
 
@@ -116,6 +108,63 @@ QuestionSchema.statics.getQuestionByID = async function(_id) {
     return question
 }
 
+QuestionSchema.statics.flagAsBlurry = async function(id, email) {
+    console.log("question id, email: ", id, email)
+    const question = await this.findOne({_id: id})
+    if(!question) {
+        throw Error("Question not found")
+    }
+    if(!question.flagBlurry.includes(email)) {
+        await this.updateOne(
+            {_id: id},
+            {$push: {flagBlurry: email}},
+            {new: true}
+        )
+    }
+}
+
+QuestionSchema.statics.flagAsIncorrect = async function(id, email) {
+    console.log("question id, email: ", id, email)
+    const question = await this.findOne({_id: id})
+    if(!question) {
+        throw Error("Question not found")
+    }
+    if(!question.flagIncorrect.includes(email)) {
+        await this.updateOne(
+            {_id: id},
+            {$push: {flagIncorrect: email}},
+            {new: true}
+        )
+    }
+}
+
+QuestionSchema.statics.removeBlurryFlag = async function(id, email) {
+    console.log("question id, email: ", id, email)
+    const question = await this.findOne({_id: id})
+    if(!question) {
+        throw Error("Question not found")
+    }
+    if(question.flagBlurry.includes(email)) {
+        await this.updateOne(
+            {_id: id},
+            {$pull: {flagBlurry: email}}
+        )
+    }
+}
+
+QuestionSchema.statics.removeIncorrectFlag = async function(id, email) {
+    console.log("question id, email: ", id, email)
+    const question = await this.findOne({_id: id})
+    if(!question) {
+        throw Error("Question not found")
+    }
+    if(question.flagIncorrect.includes(email)) {
+        await this.updateOne(
+            {_id: id},
+            {$pull: {flagIncorrect: email}}
+        )
+    }
+}
 
 const questionModel = mongoose.model('Question', QuestionSchema);
 

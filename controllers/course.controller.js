@@ -4,7 +4,7 @@ const createCourse = async (req, res) => {
     // console.log("in course controller, req.body:", req.body)
     const {email, password, course} = req.body;
     // console.log("course: ", course);
-    console.log("from course controller1:",course);
+    // console.log("from course controller1:",course);
     try {
         
         const _course = await Course.addCourse(email, password, course);
