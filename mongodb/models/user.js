@@ -141,6 +141,9 @@ UserSchema.statics.addToStarred = async function(email, body) {
 
 UserSchema.statics.removeFromStarred = async function (email, questionToRemove) {
     const user = await this.findOne({email})
+    if(!user) {
+        throw Error("User not found")
+    }
     await this.updateOne(
         { _id: user._id },
         { $pull: { starred: { questionId: questionToRemove } } },

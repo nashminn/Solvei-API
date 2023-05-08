@@ -1,5 +1,6 @@
 import User from '../mongodb/models/user.js';
 import jwt from 'jsonwebtoken';
+import Question from '../mongodb/models/question.js';
 
 const createToken = (_id) => {
     return jwt.sign({_id}, process.env.SECRET, {expiresIn: '3d'});
@@ -60,14 +61,19 @@ const getUserInfo = async (req, res) => {
 
 const addToStarred = async(req, res) => {
     try {
-        const {email, courseCode, courseName, batch, examType, questionId} = req.body
+        const {email, questionId} = req.body
+        const question = await Question.getQuestionByID(questionId)
+        if(!question) {
+            throw Error("Question not found")
+        }
         const body = {
-            courseCode: courseCode,
-            courseName: courseName,
-            batch: batch,
-            examType: examType,
+            courseCode: question.courseCode,
+            courseName: question.courseName,
+            batch: question.batch,
+            examType: question.examType,
             questionId: questionId
         }
+        console.log("add to star body: ", body)
         await User.addToStarred(email, body)
         res.status(200).json({message: "Added to starred"})
     } catch(error) {

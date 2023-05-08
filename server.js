@@ -20,6 +20,7 @@ app.use(cors());
 app.use(express.json({limit: '20mb'}));
 
 app.use('/api/auth', userRouter);
+app.use('/api/user', userRouter);
 app.use('/api/course', courseRouter);
 app.use('/api/question', questionRouter);
 app.use('/api/search', searchRouter);
