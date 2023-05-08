@@ -91,6 +91,19 @@ const removeFromStarred = async (req, res) => {
     }
 }
 
+const getGlobalRecentActivity = async (req, res) => {
+    var {fetch} = req.query
+    fetch = Number(fetch)
+    console.log("fetch: ", fetch)
+    try {
+        const result = await User.globalRecentActivity(fetch)
+        console.log(result)
+        res.status(200).json(result)
+    } catch(error) {
+        console.log(error.message)
+        res.status(400).json({error: error.message})
+    }
+}
 
 
 export {
@@ -98,5 +111,6 @@ export {
     loginUser,
     getUserInfo,
     addToStarred,
-    removeFromStarred
+    removeFromStarred,
+    getGlobalRecentActivity
 }

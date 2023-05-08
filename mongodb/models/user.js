@@ -186,6 +186,38 @@ UserSchema.statics.deleteRecentActivity = async function(email, id, question) {
 
 }
 
+UserSchema.statics.globalRecentActivity = async function (count) {
+    const pipeline = [
+        // Unwind the recentActivity array to create a separate document for each activity
+        { $unwind: "$recentActivity" },
+        // Sort the documents by the timestamp in descending order
+        { $sort: { "recentActivity.timestamp": -1 } },
+        // Project the fields that you need in the output
+        { $project: {
+            _id: 0,
+            email: 1,
+            name: 1,
+            recentActivity: 1
+          }
+        },
+        // Limit the output to "count" documents
+        { $limit: count }
+    ];
+      
+    const cursor = this.aggregate(pipeline).cursor({});
+    
+    // Use the cursor to iterate over the results
+    var retList = []
+    for await (const doc of cursor) {
+        // console.log(doc);
+        retList.push(doc)
+    }
+    // console.log(retList)
+    return retList;
+      
+      
+}
+
 // UserSchema.statics.removeRecentActivity = async function(email, id) {
 
 //     const user = await this.findOne({email})
