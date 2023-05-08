@@ -96,7 +96,7 @@ QuestionSchema.statics.searchQuestion = async function(courseCode, courseName, b
 }
 
 
-QuestionSchema.statics.getQuestionByID = async (_id) => {
+QuestionSchema.statics.getQuestionByID = async function(_id) {
     console.log("in question.js _id: ", _id)
     let question;
     try {

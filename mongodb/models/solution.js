@@ -138,7 +138,7 @@ SolutionSchema.statics.downvoteSolution = async function(id, email) {
     )
 }
 
-SolutionSchema.statics.deleteSolution = async (solutionId) => {
+SolutionSchema.statics.deleteSolution = async function (solutionId) {
     const solution = await this.findOne({_id: new mongoose.Types.ObjectId(solutionId)})
     if(!solution) {
         throw Error("solution not found for deletion")
