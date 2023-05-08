@@ -4,8 +4,6 @@ import User from '../mongodb/models/user.js'
 import multer from 'multer'
 import { createFile } from '../google_drive/drive.js'
 import { Readable } from 'stream'
-import { query } from 'express'
-import { buffer } from 'stream/consumers'
 
 const storage = multer.memoryStorage()
 const upload = multer({ storage: storage })

@@ -10,6 +10,7 @@ import questionRouter from './routes/question.routes.js';
 import courseRouter from './routes/course.routes.js';
 import searchRouter from './routes/search.routes.js';
 import solutionRouter from './routes/solution.routes.js';
+import replyRouter from './routes/reply.routes.js';
 
 dotenv.config();
 
@@ -25,6 +26,7 @@ app.use('/api/course', courseRouter);
 app.use('/api/question', questionRouter);
 app.use('/api/search', searchRouter);
 app.use('/api/solution', solutionRouter);
+app.use('/api/reply', replyRouter);
 
 
 app.get('/', (req, res) => {

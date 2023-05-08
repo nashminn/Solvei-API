@@ -64,7 +64,18 @@ SolutionSchema.statics.getSolution = async function(_id) {
         solution = await this.find({questionID: _id})
     } catch(error) {
         console.log(error)
-        return error
+        throw Error(error.message)
+    }
+    return solution
+}
+
+SolutionSchema.statics.getSolutionById = async function(id) {
+    let solution
+    try {
+        solution = await this.findOne({_id: id})
+    } catch(error) {
+        console.log(error)
+        throw Error(error.message)
     }
     return solution
 }
@@ -104,21 +115,6 @@ SolutionSchema.statics.removeUpvote = async function(id, email) {
     }
 }
 
-SolutionSchema.statics.removeDownvote = async function(id, email) {
-    console.log("solution id, email:", id, email)
-    const solution = await this.findOne({_id: id})
-    if(!solution) {
-        throw Error("Solution not found")
-    }
-    if(solution.downvotes.includes(email)) {
-        await this.updateOne(
-            {_id: id},
-            {$pull: {downvotes: email}}
-        )
-    }
-}
-
-
 SolutionSchema.statics.downvoteSolution = async function(id, email) {
     console.log("solution id, email:", id, email)
     const solution = await this.findOne({_id: id})
@@ -138,16 +134,31 @@ SolutionSchema.statics.downvoteSolution = async function(id, email) {
     )
 }
 
+SolutionSchema.statics.removeDownvote = async function(id, email) {
+    console.log("solution id, email:", id, email)
+    const solution = await this.findOne({_id: id})
+    if(!solution) {
+        throw Error("Solution not found")
+    }
+    if(solution.downvotes.includes(email)) {
+        await this.updateOne(
+            {_id: id},
+            {$pull: {downvotes: email}}
+        )
+    }
+}
+
+
 SolutionSchema.statics.deleteSolution = async function (solutionId) {
     const solution = await this.findOne({_id: new mongoose.Types.ObjectId(solutionId)})
     if(!solution) {
         throw Error("solution not found for deletion")
     }
     if(solution.isPDF) {
-        deleteFileById(solution.pdfID)
+        await deleteFileById(solution.pdfID)
     }
     await this.deleteOne({_id: new mongoose.Types.ObjectId(solutionId)})
-    await User.deleteRecentActivity(user.email, solution._id, false)
+    await User.deleteRecentActivity(solution.postedBy, solution._id, false)
 }
 
 const solutionModel = mongoose.model('Solution', SolutionSchema)

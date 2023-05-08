@@ -96,11 +96,11 @@ QuestionSchema.statics.searchQuestion = async function(courseCode, courseName, b
 }
 
 
-QuestionSchema.statics.getQuestionByID = async function(_id) {
-    console.log("in question.js _id: ", _id)
+QuestionSchema.statics.getQuestionByID = async function(id) {
+    console.log("in question.js _id: ", id)
     let question;
     try {
-        question = await this.findOne({_id: new mongoose.Types.ObjectId(_id)})
+        question = await this.findOne({_id: (id)})
     } catch(error) {
         console.log(error)
     }

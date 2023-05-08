@@ -178,6 +178,10 @@ UserSchema.statics.deleteRecentActivity = async function(email, id, question) {
             {_id: user._id},
             {$pull: {recentActivity: {solutionId: id}}}
         )
+        await this.updateOne(
+            {_id: user._id},
+            {$pull: {recentActivity: {replyId: id}}}
+        )
     }
 
 }

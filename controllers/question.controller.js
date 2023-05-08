@@ -110,6 +110,10 @@ const getQuestion = async(req, res) => {
     }
 }
 
+const deleteQuestion = async (req, res) => {
+    
+}
+
 const searchQuestion = async(req, res) => {
     const batch = req.query.batch? Number(req.query.batch) : req.query.batch;
     const examType = req.query.examType;
