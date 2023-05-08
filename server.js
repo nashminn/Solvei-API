@@ -33,7 +33,11 @@ app.get('/', (req, res) => {
             auth: {
                 register: "register new user",
                 login: "user login",
-                user: "get user info"
+            },
+            user: {
+                "/": "get user info",
+                "star/add": "add question to starred",
+                "star/remove": "remove question from starred"
             },
             course: {
                 "/": "home page courses",
@@ -43,6 +47,14 @@ app.get('/', (req, res) => {
             question: {
                 post: "post a new question",
                 view: "view a question and its solutions"
+            },
+            solution: {
+                add: "add solution",
+                get: "get solution",
+                "add/upvote": "upvote solution",
+                "add/downvote": "downvote solution",
+                "remove/upvote": "remove upvote",
+                "remove/downvote": "remove downvote"
             },
             search: {
                 question: "takes params for diplaying questions",

@@ -116,6 +116,7 @@ QuestionSchema.statics.getQuestionByID = async function(_id) {
     return question
 }
 
+
 const questionModel = mongoose.model('Question', QuestionSchema);
 
 export default questionModel;

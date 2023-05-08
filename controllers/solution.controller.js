@@ -118,9 +118,53 @@ const getSolution = async (req, res) => {
     }
 }
 
+const upvoteSolution = async (req, res) => {
+    try {
+        const {email, solutionId} = req.body
+        await Solution.upvoteSolution(solutionId, email)
+        res.status(200).json({message: "Solution upvoted"})
+    } catch(error) {
+        res.status(400).json({error: error.message})
+    }
+}
+
+const downvoteSolution = async (req, res) => {
+    try {
+        const {email, solutionId} = req.body
+        await Solution.downvoteSolution(solutionId, email)
+        res.status(200).json({message: "Solution downvoted"})
+    } catch(error) {
+        res.status(400).json({error: error.message})
+    }
+}
+
+const removeUpvote = async (req, res) => {
+    try {
+        const {email, solutionId} = req.body
+        await Solution.removeUpvote(solutionId, email)
+        res.status(200).json({message: "Upvote removed"})
+    } catch(error) {
+        res.status(400).json({error: error.message})
+    }
+}
+
+const removeDownvote = async (req, res) => {
+    try {
+        const {email, solutionId} = req.body
+        await Solution.removeDownvote(solutionId, email)
+        res.status(200).json({message: "Downvote removed"})
+    } catch(error) {
+        res.status(400).json({error: error.message})
+    }
+}
+
 export {
     addSolution,
-    getSolution
+    getSolution,
+    upvoteSolution,
+    downvoteSolution,
+    removeUpvote,
+    removeDownvote
 }
 
 

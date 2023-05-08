@@ -68,6 +68,75 @@ SolutionSchema.statics.getSolution = async function(_id) {
 }
 
 
+SolutionSchema.statics.upvoteSolution = async function(id, email) {
+    console.log("solution id, email:", id, email)
+    const solution = await this.findOne({_id: id})
+    if(!solution) {
+        throw Error("Solution not found")
+    }
+    console.log(solution)
+    if(solution.downvotes.includes(email)) {
+        await this.updateOne(
+            {_id: id},
+            {$pull: {downvotes: email}}
+        )
+    }
+    await this.updateOne(
+        {_id: id},
+        {$push: {upvotes: email}},
+        {new: true}
+    )
+}
+
+SolutionSchema.statics.removeUpvote = async function(id, email) {
+    console.log("solution id, email:", id, email)
+    const solution = await this.findOne({_id: id})
+    if(!solution) {
+        throw Error("Solution not found")
+    }
+    if(solution.upvotes.includes(email)) {
+        await this.updateOne(
+            {_id: id},
+            {$pull: {upvotes: email}}
+        )
+    }
+}
+
+SolutionSchema.statics.removeDownvote = async function(id, email) {
+    console.log("solution id, email:", id, email)
+    const solution = await this.findOne({_id: id})
+    if(!solution) {
+        throw Error("Solution not found")
+    }
+    if(solution.downvotes.includes(email)) {
+        await this.updateOne(
+            {_id: id},
+            {$pull: {downvotes: email}}
+        )
+    }
+}
+
+
+SolutionSchema.statics.downvoteSolution = async function(id, email) {
+    console.log("solution id, email:", id, email)
+    const solution = await this.findOne({_id: id})
+    if(!solution) {
+        throw Error("Solution not found")
+    }
+    if(solution.upvotes.includes(email)) {
+        await this.updateOne(
+            {_id: id},
+            {$pull: {upvotes: email}}
+        )
+    }
+    await this.updateOne(
+        {_id: id},
+        {$push: {downvotes: email}},
+        {new: true}
+    )
+}
+
+
 const solutionModel = mongoose.model('Solution', SolutionSchema)
 
 export default solutionModel
