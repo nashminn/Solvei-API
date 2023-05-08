@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
-
+import { deleteFileById } from "../../google_drive/drive.js";
+import User from './user.js'
 
 const QuestionSchema = new mongoose.Schema({
     postedBy: {
@@ -95,7 +96,7 @@ QuestionSchema.statics.searchQuestion = async function(courseCode, courseName, b
 }
 
 
-QuestionSchema.statics.getQuestionByID = async function(_id) {
+QuestionSchema.statics.getQuestionByID = async (_id) => {
     console.log("in question.js _id: ", _id)
     let question;
     try {
@@ -106,6 +107,16 @@ QuestionSchema.statics.getQuestionByID = async function(_id) {
     // console.log("hello?0")
     // console.log("question fetched from db:", question)
     return question
+}
+
+QuestionSchema.statics.deleteQuestion = async function(questionId) {
+    const question = await this.findOne({_id: new mongoose.Types.ObjectId(questionId)})
+    if(!question) {
+        throw Error("Question not found for deletion")
+    }
+    await deleteFileById(question.fileId)
+    await this.deleteOne({_id: new mongoose.Types.ObjectId(questionId)})
+    await User.deleteRecentActivity(question.postedBy, questionId, true)
 }
 
 QuestionSchema.statics.flagAsBlurry = async function(id, email) {

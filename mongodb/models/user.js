@@ -38,6 +38,7 @@ const UserSchema = new mongoose.Schema({
                 description: {type: String},
                 answered: {type: Boolean},
                 questionId: {type: String},
+                solutionId: {type: String},
                 courseCode: {type: String},
                 courseName: {type: String},
                 batch: {type: Number},
@@ -161,6 +162,35 @@ UserSchema.statics.addRecentActivity = async function(email, body) {
         { new: true}
     )
 }
+
+UserSchema.statics.deleteRecentActivity = async function(email, id, question) {
+    const user = await this.findOne({email})
+    if(!user) {
+        throw Error("User not found")
+    }
+    if(question) {
+        await this.updateOne(
+            {_id: user._id},
+            {$pull: {recentActivity: {questionId: id}}}
+        )
+    } else {
+        await this.updateOne(
+            {_id: user._id},
+            {$pull: {recentActivity: {solutionId: id}}}
+        )
+    }
+
+}
+
+// UserSchema.statics.removeRecentActivity = async function(email, id) {
+
+//     const user = await this.findOne({email})
+//     console.log("remove recent activity from user: ", user)
+//     await this.updateOne(
+//         {_id: user._id},
+//         { $pull: {recentActivity: {questionId: id}}}
+//     )
+// }
 
 const userModel = mongoose.model('User', UserSchema);
 

@@ -12,6 +12,7 @@ const upload = multer({ storage: storage })
 
 const addSolution = async (req, res) => {
     var errorFlag = false
+    var solutionId
     upload.fields([
         { name: 'pdfFile', maxCount: 1 },
         { name: 'imageFile', maxCount: 1 },
@@ -53,6 +54,7 @@ const addSolution = async (req, res) => {
                 try {
                     console.log(body)
                     const solution = await Solution.addSolution(body)
+                    solutionId = solution._id
                     res.status(200).json(solution)
                 } catch(error) {
                     errorFlag = true
@@ -78,6 +80,7 @@ const addSolution = async (req, res) => {
             try {
                 console.log(body)
                 const solution = await Solution.addSolution(body)
+                solutionId = solution._id
                 res.status(200).json(solution)
             } catch(error) {
                 errorFlag = true
@@ -92,9 +95,10 @@ const addSolution = async (req, res) => {
             const question = await Question.getQuestionByID(questionID)
             console.log(question.courseName)
             const body = {
-                description: "added a solution to "+question.courseCode + ' :' + question.courseName + " batch "+ question.batch + " " + question.examType + " exam ",
+                description: "added a solution to "+question.courseCode + ': ' + question.courseName + " batch "+ question.batch + " " + question.examType + " exam",
                 answered: true,
                 questionId: questionID,
+                solutionId: solutionId,
                 courseCode: question.courseCode,
                 courseName: question.courseName,
                 batch: question.batch,
@@ -117,6 +121,10 @@ const getSolution = async (req, res) => {
         throw Error(error.message)
     }
 }
+
+// const deleteSolution = async (req, res) => {
+
+// }
 
 const upvoteSolution = async (req, res) => {
     try {

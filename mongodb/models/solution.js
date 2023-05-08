@@ -1,4 +1,6 @@
 import mongoose, { mongo } from "mongoose"
+import { deleteFileById } from "../../google_drive/drive.js";
+import User from "../models/user.js"
 
 const SolutionSchema = new mongoose.Schema({
     isPDF: {
@@ -136,6 +138,17 @@ SolutionSchema.statics.downvoteSolution = async function(id, email) {
     )
 }
 
+SolutionSchema.statics.deleteSolution = async (solutionId) => {
+    const solution = await this.findOne({_id: new mongoose.Types.ObjectId(solutionId)})
+    if(!solution) {
+        throw Error("solution not found for deletion")
+    }
+    if(solution.isPDF) {
+        deleteFileById(solution.pdfID)
+    }
+    await this.deleteOne({_id: new mongoose.Types.ObjectId(solutionId)})
+    await User.deleteRecentActivity(user.email, solution._id, false)
+}
 
 const solutionModel = mongoose.model('Solution', SolutionSchema)
 

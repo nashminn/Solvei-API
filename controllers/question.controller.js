@@ -1,4 +1,5 @@
 import Question from '../mongodb/models/question.js';
+import User from '../mongodb/models/user.js'
 import multer from 'multer';
 import { createFile, getFile } from '../google_drive/drive.js';
 import { Readable } from 'stream';
@@ -58,10 +59,25 @@ const addQuestion = async (req, res)  => {
                     res.status(406).json({Error: "Question already exists"})
                 } else {
                     const question = await (Question.addQuestion(body));
-                    res.status(200).json(question);
+                    
 
                     // updating recent activity of user
-                    
+                    console.log(question)
+                    const questionId = question._id
+                    const answered = false
+                    const description = " added a question to " + courseCode + ": " + courseName + " batch " + batch + " " + examType + " exam"
+                    const another = {
+                        description: description,
+                        answered: answered,
+                        questionId: questionId,
+                        courseCode: courseCode,
+                        courseName: courseName,
+                        batch: batch,
+                        examType: examType
+                    }
+                    await User.addRecentActivity(postedBy, another)
+
+                    res.status(200).json(question);
                 }
             } catch(error) {
                 // console.log("from inside add question")
