@@ -65,7 +65,7 @@ QuestionSchema.statics.addQuestion = async function(body) {
 
 QuestionSchema.statics.searchQuestion = async function(courseCode, courseName, batch, examType, yearSemester, teacher) {
     var query = {};
-    console.log("in question.js: ", courseCode, courseName, batch, examType, yearSemester, teacher)
+    // console.log("in question.js: ", courseCode, courseName, batch, examType, yearSemester, teacher)
     if(batch) {
         query.batch = batch;
     }
@@ -88,16 +88,16 @@ QuestionSchema.statics.searchQuestion = async function(courseCode, courseName, b
         query.teacher = {$regex: ".*" + teacher + ".*" , $options : "i"}
     }
 
-    console.log("query for find operation", query)
+    // console.log("query for find operation", query)
     const qList = await this.find(query)
-    console.log("questions list length", qList.length)
+    // console.log("questions list length", qList.length)
     return qList
     
 }
 
 
 QuestionSchema.statics.getQuestionByID = async function(id) {
-    console.log("in question.js _id: ", id)
+    // console.log("in question.js _id: ", id)
     let question;
     try {
         question = await this.findOne({_id: (id)})
@@ -120,7 +120,7 @@ QuestionSchema.statics.deleteQuestion = async function(questionId) {
 }
 
 QuestionSchema.statics.flagAsBlurry = async function(id, email) {
-    console.log("question id, email: ", id, email)
+    // console.log("question id, email: ", id, email)
     const question = await this.findOne({_id: id})
     if(!question) {
         throw Error("Question not found")
@@ -135,7 +135,7 @@ QuestionSchema.statics.flagAsBlurry = async function(id, email) {
 }
 
 QuestionSchema.statics.flagAsIncorrect = async function(id, email) {
-    console.log("question id, email: ", id, email)
+    // console.log("question id, email: ", id, email)
     const question = await this.findOne({_id: id})
     if(!question) {
         throw Error("Question not found")
@@ -150,7 +150,7 @@ QuestionSchema.statics.flagAsIncorrect = async function(id, email) {
 }
 
 QuestionSchema.statics.removeBlurryFlag = async function(id, email) {
-    console.log("question id, email: ", id, email)
+    // console.log("question id, email: ", id, email)
     const question = await this.findOne({_id: id})
     if(!question) {
         throw Error("Question not found")
@@ -164,7 +164,7 @@ QuestionSchema.statics.removeBlurryFlag = async function(id, email) {
 }
 
 QuestionSchema.statics.removeIncorrectFlag = async function(id, email) {
-    console.log("question id, email: ", id, email)
+    // console.log("question id, email: ", id, email)
     const question = await this.findOne({_id: id})
     if(!question) {
         throw Error("Question not found")

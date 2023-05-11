@@ -49,7 +49,7 @@ const getUserInfo = async (req, res) => {
         const userWithoutPassword = JSON.parse(JSON.stringify(user));
         delete userWithoutPassword.password;
 
-        console.log("user wo pass: ", userWithoutPassword);
+        // console.log("user wo pass: ", userWithoutPassword);
 
         if(user)
             res.status(200).json(userWithoutPassword);
@@ -73,7 +73,7 @@ const addToStarred = async(req, res) => {
             examType: question.examType,
             questionId: questionId
         }
-        console.log("add to star body: ", body)
+        // console.log("add to star body: ", body)
         await User.addToStarred(email, body)
         res.status(200).json({message: "Added to starred"})
     } catch(error) {
@@ -94,10 +94,10 @@ const removeFromStarred = async (req, res) => {
 const getGlobalRecentActivity = async (req, res) => {
     var {fetch} = req.query
     fetch = Number(fetch)
-    console.log("fetch: ", fetch)
+    // console.log("fetch: ", fetch)
     try {
         const result = await User.globalRecentActivity(fetch)
-        console.log(result)
+        // console.log(result)
         res.status(200).json(result)
     } catch(error) {
         console.log(error.message)

@@ -21,9 +21,9 @@ const addSolution = async (req, res) => {
         }
 
         const {postedBy, questionID, isPDF, hasImage} = req.body
-        console.log("isPDF: ",isPDF)
+        // console.log("isPDF: ",isPDF)
         if(isPDF === 'true') {
-            console.log("isPDF true")
+            // console.log("isPDF true")
             var {pdfFile} = req.files
             pdfFile = pdfFile[0]
 
@@ -34,7 +34,7 @@ const addSolution = async (req, res) => {
                 bufferStream.push(null)
 
                 const fileName = questionID  + '_' + postedBy +".pdf"
-                console.log(pdfFile)
+                // console.log(pdfFile)
                 const result = await createFile(fileName, pdfFile.mimetype, bufferStream)
                 pdfID = result[0]
                 pdfFile = result[1]
@@ -50,7 +50,7 @@ const addSolution = async (req, res) => {
                 }
 
                 try {
-                    console.log(body)
+                    // console.log(body)
                     const solution = await Solution.addSolution(body)
                     solutionId = solution._id
                     res.status(200).json(solution)
@@ -73,10 +73,10 @@ const addSolution = async (req, res) => {
                 questionID,
                 solution
             }
-            console.log(solution)
+            // console.log(solution)
 
             try {
-                console.log(body)
+                // console.log(body)
                 const solution = await Solution.addSolution(body)
                 solutionId = solution._id
                 res.status(200).json(solution)
@@ -89,9 +89,9 @@ const addSolution = async (req, res) => {
         }
 
         if(!errorFlag) {
-            console.log("adding recent activity")
+            // console.log("adding recent activity")
             const question = await Question.getQuestionByID(questionID)
-            console.log(question.courseName)
+            // console.log(question.courseName)
             const body = {
                 description: "added a solution to "+question.courseCode + ': ' + question.courseName + " batch "+ question.batch + " " + question.examType + " exam",
                 answered: true,
@@ -109,11 +109,11 @@ const addSolution = async (req, res) => {
 
 const getSolution = async (req, res) => {
     const question = req.query.question
-    console.log("fetching solution for question: ", question)
+    // console.log("fetching solution for question: ", question)
 
     try {
         const sol = await Solution.getSolution(question)
-        console.log("actual solutions: ", sol)
+        // console.log("actual solutions: ", sol)
         res.status(200).json(sol)
     } catch(error) {
         throw Error(error.message)

@@ -35,7 +35,7 @@ const addQuestion = async (req, res)  => {
             pdfFile = result[1]
             // console.log("fileId: ", fileId)
                        
-            console.log("webViewLink from question controller: ", pdfFile);
+            // console.log("webViewLink from question controller: ", pdfFile);
 
             const body = {
                 postedBy,
@@ -62,7 +62,7 @@ const addQuestion = async (req, res)  => {
                     
 
                     // updating recent activity of user
-                    console.log(question)
+                    // console.log(question)
                     const questionId = question._id
                     const answered = false
                     const description = " added a question to " + courseCode + ": " + courseName + " batch " + batch + " " + examType + " exam"
@@ -98,7 +98,7 @@ const addQuestion = async (req, res)  => {
 
 const getQuestion = async(req, res) => {
     const question = req.query.question;
-    console.log("question id: ", question)
+    // console.log("question id: ", question)
     
     try {
         const q = await Question.getQuestionByID(question)

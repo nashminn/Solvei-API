@@ -43,11 +43,11 @@ const addReply = async (req, res) => {
 
 const getReply = async (req, res) => {
     const solution = req.query.solution
-    console.log("fetching replies for solution: ", solution)
+    // console.log("fetching replies for solution: ", solution)
 
     try {
         const rep = await Reply.getReply(solution)
-        console.log("actual reply : ", rep)
+        // console.log("actual reply : ", rep)
         res.status(200).json(rep)
     } catch(error) {
         throw Error(error.message)

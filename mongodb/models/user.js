@@ -88,7 +88,7 @@ UserSchema.statics.createUser = async function(email, password, body) {
     const hash = await bcrypt.hash(password, salt)
 
     
-    console.log("body: ", body)
+    // console.log("body: ", body)
   
     const user = await this.create({ password: hash, ...body })
   
@@ -126,13 +126,13 @@ UserSchema.statics.getUserInfo = async function(email) {
     if(!user) {
         throw Error("user not found");
     }
-    console.log(user)
+    // console.log(user)
     return user;
 }
   
 UserSchema.statics.addToStarred = async function(email, body) {
     const user = await this.findOne({email})
-    console.log(user._id)
+    // console.log(user._id)
     await this.updateOne(
         {_id: user._id},
         {$push: {starred: body}},
@@ -153,9 +153,9 @@ UserSchema.statics.removeFromStarred = async function (email, questionToRemove) 
 }
 
 UserSchema.statics.addRecentActivity = async function(email, body) {
-    console.log("add recent activity: email: ",email);
+    // console.log("add recent activity: email: ",email);
     const user = await this.findOne({email})
-    console.log("add recent activity to user: ", user)
+    // console.log("add recent activity to user: ", user)
     await this.updateOne(
         {_id: user._id},
         { $push: {recentActivity: body}},

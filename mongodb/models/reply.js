@@ -58,7 +58,7 @@ ReplySchema.statics.getReply = async function(_id) {
 }
 
 ReplySchema.statics.upvoteReply = async function(id, email) {
-    console.log("reply id, email: ", id, email)
+    // console.log("reply id, email: ", id, email)
     const reply = await this.findOne({_id: id})
     if(!reply) {
         throw Error("Reply not found")
@@ -78,7 +78,7 @@ ReplySchema.statics.upvoteReply = async function(id, email) {
 }
 
 ReplySchema.statics.removeUpvote = async function(id, email) {
-    console.log("reply id, email:", id, email)
+    // console.log("reply id, email:", id, email)
     const reply = await this.findOne({_id: id})
     if(!reply) {
         throw Error("Reply not found")
@@ -92,7 +92,7 @@ ReplySchema.statics.removeUpvote = async function(id, email) {
 }
 
 ReplySchema.statics.downvoteReply = async function(id, email) {
-    console.log("reply id, email:", id, email)
+    // console.log("reply id, email:", id, email)
     const reply = await this.findOne({_id: id})
     if(!reply) {
         throw Error("Reply not found")
@@ -111,7 +111,7 @@ ReplySchema.statics.downvoteReply = async function(id, email) {
 }
 
 ReplySchema.statics.removeDownvote = async function(id, email) {
-    console.log("reply id, email:", id, email)
+    // console.log("reply id, email:", id, email)
     const reply = await this.findOne({_id: id})
     if(!reply) {
         throw Error("Reply not found")

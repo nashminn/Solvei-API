@@ -82,12 +82,12 @@ SolutionSchema.statics.getSolutionById = async function(id) {
 
 
 SolutionSchema.statics.upvoteSolution = async function(id, email) {
-    console.log("solution id, email:", id, email)
+    // console.log("solution id, email:", id, email)
     const solution = await this.findOne({_id: id})
     if(!solution) {
         throw Error("Solution not found")
     }
-    console.log(solution)
+    // console.log(solution)
     if(solution.downvotes.includes(email)) {
         await this.updateOne(
             {_id: id},
@@ -102,7 +102,7 @@ SolutionSchema.statics.upvoteSolution = async function(id, email) {
 }
 
 SolutionSchema.statics.removeUpvote = async function(id, email) {
-    console.log("solution id, email:", id, email)
+    // console.log("solution id, email:", id, email)
     const solution = await this.findOne({_id: id})
     if(!solution) {
         throw Error("Solution not found")
@@ -116,7 +116,7 @@ SolutionSchema.statics.removeUpvote = async function(id, email) {
 }
 
 SolutionSchema.statics.downvoteSolution = async function(id, email) {
-    console.log("solution id, email:", id, email)
+    // console.log("solution id, email:", id, email)
     const solution = await this.findOne({_id: id})
     if(!solution) {
         throw Error("Solution not found")
@@ -135,7 +135,7 @@ SolutionSchema.statics.downvoteSolution = async function(id, email) {
 }
 
 SolutionSchema.statics.removeDownvote = async function(id, email) {
-    console.log("solution id, email:", id, email)
+    // console.log("solution id, email:", id, email)
     const solution = await this.findOne({_id: id})
     if(!solution) {
         throw Error("Solution not found")

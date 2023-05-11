@@ -41,7 +41,7 @@ const createFile = async (name, mimeType, body) => {
         }
     });
     
-    console.log(`File created with ID: ${res.data.id}`);
+    // console.log(`File created with ID: ${res.data.id}`);
     
     return [res.data.id, res.data.webViewLink];
 };
@@ -55,7 +55,7 @@ const getFile = async (fileId) => {
           console.error(err);
         } else {
             
-            console.log(`Web View Link: ${file.data.webViewLink}`);
+            // console.log(`Web View Link: ${file.data.webViewLink}`);
             return file.data.webViewLink
         }
     });

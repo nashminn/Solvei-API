@@ -38,18 +38,18 @@ CourseSchema.statics.addCourse = async function(email, password, _course) {
     }
     
     const user = await User.findOne({ email })
-    console.log(user);
+    // console.log(user);
     if (!user) {
         throw Error('Incorrect email')
     }
 
     const match = await bcrypt.compare(password, user.password)
-    console.log("user role: ", user.role, user);
+    // console.log("user role: ", user.role, user);
     if (!match || user.role !== 'admin') {
         throw Error('Incorrect password or not authorized')
     }
 
-    console.log("before adding to course table: ",{_course});
+    // console.log("before adding to course table: ",{_course});
     const course = await this.create(_course)
 
     return course;
