@@ -15,7 +15,14 @@ import replyRouter from './routes/reply.routes.js';
 dotenv.config();
 
 const app = express();
-app.use(cors());
+
+const corsOptions ={
+    origin:'*', 
+    credentials:true,            //access-control-allow-credentials:true
+    optionSuccessStatus:200,
+}
+
+app.use(cors(corsOptions));
 
 // every request passes through jsonify
 app.use(express.json({limit: '20mb'}));
@@ -74,7 +81,7 @@ const startServer = async() => {
 
         // listAllFiles()
         // await getFile("1k0gKQqT-nOEuw7vCUMtPL8V6rmdiqnav")
-        // deleteFileById("1U5tWP8G5kmBteevsW1IAh_mhQ9kH8n8H")
+        // deleteFileById("1xFoJLhI17hi14qIlsGNnXrK5MM_tjQ4E")
 
 
         app.listen(process.env.PORT, () => {
