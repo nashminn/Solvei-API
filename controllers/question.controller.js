@@ -137,7 +137,7 @@ const searchQuestion = async(req, res) => {
 
     try {
         const qs = await Question.searchQuestion(courseCode, courseName, batch, examType, yearSemester, teacher)
-        console.log(qs.length)
+        // console.log(qs.length)
         res.status(200).json(qs)
     } catch(error) {
         res.status(400).json(error);

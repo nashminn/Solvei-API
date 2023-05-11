@@ -16,6 +16,13 @@ dotenv.config();
 
 const app = express();
 
+app.use(function(req, res, next) {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+    next();
+});
+
 const corsOptions ={
     origin:'*', 
     credentials:true,            //access-control-allow-credentials:true
@@ -23,6 +30,8 @@ const corsOptions ={
 }
 
 app.use(cors(corsOptions));
+
+
 
 // every request passes through jsonify
 app.use(express.json({limit: '20mb'}));
