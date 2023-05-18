@@ -119,6 +119,9 @@ QuestionSchema.statics.deleteQuestion = async function(questionId) {
     await deleteFileById(question.fileId)
     await this.deleteOne({_id: new mongoose.Types.ObjectId(questionId)})
     await User.deleteRecentActivity(question.postedBy, questionId, true)
+    await User.updateMany(
+        { $pull: {starred: {questionId: questionId}}},
+    )
 }
 
 QuestionSchema.statics.flagAsBlurry = async function(id, email) {
