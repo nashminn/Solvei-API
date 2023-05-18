@@ -23,8 +23,16 @@ app.use(function(req, res, next) {
     next();
 });
 
+const allowedOrigins = ['https://solvei.vercel.app/', 'http://localhost:8000']
+
 const corsOptions ={
-    origin:'*', 
+    origin: function (origin, callback) {
+        if (allowedOrigins.includes(origin) || !origin) {
+          callback(null, true);
+        } else {
+          callback(new Error('Not allowed by CORS'));
+        }
+      }, 
     credentials:true,            //access-control-allow-credentials:true
     optionSuccessStatus:200,
 }
