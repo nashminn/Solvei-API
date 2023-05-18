@@ -111,18 +111,6 @@ QuestionSchema.statics.getQuestionByID = async function(id) {
     return question
 }
 
-QuestionSchema.statics.deleteQuestion = async function(questionId) {
-    const question = await this.findOne({_id: new mongoose.Types.ObjectId(questionId)})
-    if(!question) {
-        throw Error("Question not found for deletion")
-    }
-    await deleteFileById(question.fileId)
-    await this.deleteOne({_id: new mongoose.Types.ObjectId(questionId)})
-    await User.deleteRecentActivity(question.postedBy, questionId, true)
-    await User.updateMany(
-        { $pull: {starred: {questionId: questionId}}},
-    )
-}
 
 QuestionSchema.statics.flagAsBlurry = async function(id, email) {
     // console.log("question id, email: ", id, email)
@@ -183,7 +171,7 @@ QuestionSchema.statics.removeIncorrectFlag = async function(id, email) {
 }
 
 QuestionSchema.statics.deleteQuestion = async function(questionId) {
-    console.log("question id: ", questionId)
+    // console.log("question id: ", questionId)
     const question = await this.findOne({_id: questionId})
     if(!question) {
         throw Error("Question not found for deletion")
@@ -192,6 +180,9 @@ QuestionSchema.statics.deleteQuestion = async function(questionId) {
     await Reply.deleteMany({questionId: question._id})
     await Solution.deleteMany({questionID: question._id})
     await User.deleteRecentActivity(question.postedBy, question._id, true)
+    await User.updateMany(
+        { $pull: {starred: {questionId: questionId}}},
+    )
     await this.deleteOne({_id: question._id})
 }
 
