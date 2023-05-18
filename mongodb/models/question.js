@@ -186,6 +186,23 @@ QuestionSchema.statics.deleteQuestion = async function(questionId) {
     await this.deleteOne({_id: question._id})
 }
 
+QuestionSchema.statics.getTeachers = async function() {
+    try {
+    const teachers = await this.aggregate([
+        { $group: { _id: "$teacher" } },
+        { $group: { _id: null, teachers: { $addToSet: "$_id" } } },
+        { $project: { _id: 0, teachers: 1 } }
+      ])
+        
+        // List of unique teachers
+        // console.log(teachers[0].teachers);
+        return teachers[0]?.teachers
+    } catch(error) {
+        throw Error(error.message)
+    }
+    
+}
+
 const questionModel = mongoose.model('Question', QuestionSchema);
 
 export default questionModel;

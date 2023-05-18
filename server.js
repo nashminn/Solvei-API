@@ -54,6 +54,7 @@ app.use('/api/question', questionRouter);
 app.use('/api/search', searchRouter);
 app.use('/api/solution', solutionRouter);
 app.use('/api/reply', replyRouter);
+app.use('/api/teachers', questionRouter);
 
 
 app.get('/', (req, res) => {

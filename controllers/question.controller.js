@@ -120,6 +120,15 @@ const deleteQuestion = async (req, res) => {
     }
 }
 
+const getTeachers = async(req, res) => {
+    try {
+        const teacherList = await Question.getTeachers()
+        res.status(200).json(teacherList)
+    } catch(error) {
+        res.status(500).json({ message: 'Failed to fetch list of teachers', error: error.message });
+    }
+}
+
 const searchQuestion = async(req, res) => {
     const batch = req.query.batch? Number(req.query.batch) : req.query.batch;
     const examType = req.query.examType;
@@ -229,5 +238,6 @@ export {
     flagAsIncorrect,
     removeBlurryFlag,
     removeIncorrectFlag,
-    deleteQuestion
+    deleteQuestion,
+    getTeachers
 }
