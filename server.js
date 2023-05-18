@@ -23,10 +23,12 @@ app.use(function(req, res, next) {
     next();
 });
 
-const allowedOrigins = ['https://solvei.vercel.app/', 'http://localhost:8000']
+// const allowedOrigins = ['https://solvei.vercel.app//', 'postman-origin', 'http://localhost:3000']
+const allowedOrigins = ['https://solvei.vercel.app//']
 
 const corsOptions ={
     origin: function (origin, callback) {
+        console.log("origin: ", origin)
         if (allowedOrigins.includes(origin) || !origin) {
           callback(null, true);
         } else {
