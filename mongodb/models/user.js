@@ -164,7 +164,7 @@ UserSchema.statics.addRecentActivity = async function(email, body) {
 }
 
 UserSchema.statics.deleteRecentActivity = async function(email, id, question) {
-    const user = await this.findOne({email})
+    const user = await this.findOne({email: email})
     if(!user) {
         throw Error("User not found")
     }

@@ -164,13 +164,24 @@ const removeDownvote = async (req, res) => {
     }
 }
 
+const deleteSolution = async(req, res) => {
+    try {
+        const { id } = req.params;
+        await Solution.deleteSolution(id)
+        res.status(200).json({ message: 'Solution deleted successfully' });
+    } catch (error) {
+      res.status(500).json({ message: 'Failed to delete solution', error: error.message });
+    }
+}
+
 export {
     addSolution,
     getSolution,
     upvoteSolution,
     downvoteSolution,
     removeUpvote,
-    removeDownvote
+    removeDownvote,
+    deleteSolution
 }
 
 

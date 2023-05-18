@@ -111,7 +111,13 @@ const getQuestion = async(req, res) => {
 }
 
 const deleteQuestion = async (req, res) => {
-    
+    try {
+        const { id } = req.params;
+        await Question.deleteQuestion(id)
+        res.status(200).json({ message: 'Question deleted successfully' });
+    } catch (error) {
+      res.status(500).json({ message: 'Failed to delete question', error: error.message });
+    }
 }
 
 const searchQuestion = async(req, res) => {
@@ -222,5 +228,6 @@ export {
     flagAsBlurry,
     flagAsIncorrect,
     removeBlurryFlag,
-    removeIncorrectFlag
+    removeIncorrectFlag,
+    deleteQuestion
 }

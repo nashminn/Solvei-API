@@ -94,13 +94,24 @@ const removeDownvote = async (req, res) => {
     }
 }
 
+const deleteReply = async(req, res) => {
+    try {
+        const { id } = req.params;
+        await Reply.deleteReply(id)
+        res.status(200).json({ message: 'Reply deleted successfully' });
+    } catch (error) {
+      res.status(500).json({ message: 'Failed to delete reply', error: error.message });
+    }
+}
+
 export {
     addReply,
     getReply,
     upvoteReply,
     downvoteReply,
     removeUpvote,
-    removeDownvote
+    removeDownvote,
+    deleteReply
 }
 
 

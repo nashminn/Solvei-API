@@ -1,6 +1,7 @@
 import mongoose, { mongo } from "mongoose"
 import { deleteFileById } from "../../google_drive/drive.js";
 import User from "../models/user.js"
+import Reply from "../models/reply.js"
 
 const SolutionSchema = new mongoose.Schema({
     isPDF: {
@@ -157,6 +158,7 @@ SolutionSchema.statics.deleteSolution = async function (solutionId) {
     if(solution.isPDF) {
         await deleteFileById(solution.pdfID)
     }
+    await Reply.deleteMany({solutionId: solutionId})
     await this.deleteOne({_id: new mongoose.Types.ObjectId(solutionId)})
     await User.deleteRecentActivity(solution.postedBy, solution._id, false)
 }

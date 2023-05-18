@@ -1,6 +1,8 @@
 import mongoose from "mongoose";
 import { deleteFileById } from "../../google_drive/drive.js";
 import User from './user.js'
+import Reply from "./reply.js";
+import Solution from "./solution.js";
 
 const QuestionSchema = new mongoose.Schema({
     postedBy: {
@@ -175,6 +177,19 @@ QuestionSchema.statics.removeIncorrectFlag = async function(id, email) {
             {$pull: {flagIncorrect: email}}
         )
     }
+}
+
+QuestionSchema.statics.deleteQuestion = async function(questionId) {
+    console.log("question id: ", questionId)
+    const question = await this.findOne({_id: questionId})
+    if(!question) {
+        throw Error("Question not found for deletion")
+    }
+    await deleteFileById(question.fileId)
+    await Reply.deleteMany({questionId: question._id})
+    await Solution.deleteMany({questionID: question._id})
+    await User.deleteRecentActivity(question.postedBy, question._id, true)
+    await this.deleteOne({_id: question._id})
 }
 
 const questionModel = mongoose.model('Question', QuestionSchema);

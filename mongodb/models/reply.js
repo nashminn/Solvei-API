@@ -1,4 +1,5 @@
 import { mongoose } from "mongoose";
+import User from "../models/user.js"
 
 
 const ReplySchema = new mongoose.Schema({
@@ -125,13 +126,16 @@ ReplySchema.statics.removeDownvote = async function(id, email) {
 }
 
 ReplySchema.statics.deleteReply = async function (replyId) {
+    console.log("reply id: ", replyId)
     const reply = await this.findOne({_id: new mongoose.Types.ObjectId(replyId)})
     if(!reply) {
         throw Error("Reply not found for deletion")
     }
+    console.log("reply to be delete: ", reply.postedBy)
 
-    await this.deleteOne({_id: new mongoose.Types.ObjectId(replyId)})
     await User.deleteRecentActivity(reply.postedBy, reply._id, false)
+    console.log("under delete recent activity")
+    await this.deleteOne({_id: new mongoose.Types.ObjectId(replyId)})
 }
 
 const replyModel = mongoose.model('Reply', ReplySchema)
